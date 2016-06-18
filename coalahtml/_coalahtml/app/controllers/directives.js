@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('coalaHtmlApp')
-  .directive('prettyprint', function() {
+  .directive('prettyprint',["$routeParams", "$rootScope", 
+    function($routeParams, $rootScope) {
     return {
       priority: 10,  // Decrease priority so it's run after ngBindHtml
       restrict: 'C',
@@ -18,10 +19,27 @@ angular.module('coalaHtmlApp')
           }
 
           element.html(prettyPrintOne(newValue, '', lineNums));
+
+          // Idea is to create elements dynamically and append to the code block.
+          var __className__ = $rootScope.THEME ? "highlight-line" : "highlight-line-dark";
+          $rootScope.resultFiles[$routeParams.fileName].forEach(function(result) { 
+            for(var line=result.start-1; line<result.end; line++) {
+              element[0].getElementsByTagName('ol').children[lineNum-1]
+                .classList.add(__className__);
+              var diffPre = document.createElement('pre');
+              var msgSpan = document.createElement('span');
+              diffPre.classList.add('diff-highlight');  // similarly add more
+              msgSpan.classList.add('msg-highlight');
+              diffPre.innerHTML = result.diffs[$routeParams.fileName];
+              msgSpan.innerHTML = result.message;
+              element[0].appendChild(diffPre);
+              element[0].appendChild(msgSpan);
+            }
+          });
         });
       }
     };
-  })
+  }])
   .directive('bsNavActive', function($location) {
     return {
       restrict: 'A',

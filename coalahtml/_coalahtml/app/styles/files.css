@@ -2,6 +2,18 @@
     margin-left: 5px;
     color: #196465 !important;
 }
+.highlight-line{
+background: gray;
+}
+.highlight-dark-line{
+  background: white;
+}
+.diff-highlight{
+background: aqua;
+}
+.msg-highlight{
+  background: skyblue;
+}
 .table-row-link {
     cursor: pointer;
     cursor: hand;
