@@ -61,3 +61,4 @@ class Tree:
                 result[current.abspath].append(child.abspath)
 
         return result
+
